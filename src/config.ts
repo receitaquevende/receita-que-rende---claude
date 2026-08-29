@@ -28,9 +28,9 @@ export const PRODUCT = {
    * (preço "de") e `installments` (parcelamento) — ambos são opcionais.
    * Use strings já formatadas em Real. Ex.: '39,90'
    */
-  price: '',                 // ex.: '39,90'   (vazio = a seção de oferta não mostra preço)
-  priceFrom: '',             // ex.: '97,00'   (vazio = não mostra preço "de")
-  installments: '',          // ex.: '12x de R$ 4,03'  (vazio = não mostra parcelas)
+  price: '19,90',            // valor à vista (vazio = a seção de oferta não mostra preço)
+  priceFrom: '',             // ex.: '47,00'   (vazio = não mostra preço "de")
+  installments: '',          // ex.: '4x de R$ 5,44'  (vazio = não mostra parcelas)
   currencyPrefix: 'R$',
 
   /**
@@ -63,8 +63,12 @@ export const GUARANTEE_DAYS = 0;
 /* -------------------------------------------------------------------------- */
 
 export const SITE = {
-  /** Domínio final (com https, sem barra no fim). Usado em canonical / OG / sitemap. */
-  url: 'https://receitaquerende.com.br',
+  /**
+   * Endereço final da página (com https, sem barra no fim).
+   * Usado em canonical, prévia de compartilhamento (OG) e sitemap.
+   * Ajuste para o subdomínio exato que a Vercel gerar, ou para o seu domínio próprio.
+   */
+  url: 'https://receita-que-rende.vercel.app',
 
   title: 'Receita Que Rende | Morango Cravejado',
   description:

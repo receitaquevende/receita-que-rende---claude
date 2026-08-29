@@ -1,8 +1,8 @@
 ---
 /**
- * Botão de compra — aponta para o checkout da Cakto (config.ts).
- * Enquanto CAKTO_CHECKOUT_URL estiver vazio, o botão avisa que o checkout
- * ainda não foi configurado, em vez de levar o visitante para lugar nenhum.
+ * Botão de compra — aponta para o link de checkout definido em config.ts.
+ * Enquanto o link estiver vazio, o botão rola a página até a oferta,
+ * em vez de levar o visitante para lugar nenhum.
  */
 import Button from './Button.astro';
 import { PRODUCT, hasCheckout, TRACKING } from '../config';
@@ -46,7 +46,7 @@ const label = await Astro.slots.render('default');
   </Button>
   {!hasCheckout && (
     <p class="cta__pending" hidden data-cta-note>
-      Checkout ainda não configurado — defina <code>CAKTO_CHECKOUT_URL</code> em <code>src/config.ts</code>.
+      Link de checkout ainda não configurado — defina <code>checkoutUrl</code> em <code>src/config.ts</code>.
     </p>
   )}
 </div>

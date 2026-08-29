@@ -28,18 +28,17 @@ export const PRODUCT = {
    * (preço "de") e `installments` (parcelamento) — ambos são opcionais.
    * Use strings já formatadas em Real. Ex.: '39,90'
    */
-  price: '',                 // ex.: '39,90'   (vazio = mostra "Consulte o valor")
+  price: '',                 // ex.: '39,90'   (vazio = a seção de oferta não mostra preço)
   priceFrom: '',             // ex.: '97,00'   (vazio = não mostra preço "de")
   installments: '',          // ex.: '12x de R$ 4,03'  (vazio = não mostra parcelas)
   currencyPrefix: 'R$',
 
   /**
-   * Link de checkout da Cakto. Todos os botões de compra apontam para cá.
-   * Enquanto estiver vazio, os botões avisam que o checkout ainda não foi
-   * configurado (em vez de levar o visitante para lugar nenhum).
-   * Ex.: 'https://pay.cakto.com.br/SEU_CODIGO'
+   * Link de checkout (pagamento). Todos os botões de compra apontam para cá.
+   * Enquanto estiver vazio, os botões rolam a página até a oferta em vez de
+   * levar o visitante para lugar nenhum.
    */
-  checkoutUrl: '',
+  checkoutUrl: 'https://pay.cakto.com.br/msshn7m_1071078',
 } as const;
 
 /* Compatibilidade com os nomes de variável pedidos no briefing */
@@ -55,7 +54,7 @@ export const CAKTO_CHECKOUT_URL = PRODUCT.checkoutUrl;
  * Dias de garantia incondicional.
  * 0  = sem garantia  → a seção de garantia fica OCULTA automaticamente.
  * 7  = garantia de 7 dias (padrão do Código de Defesa do Consumidor).
- * Configure aqui apenas o que você realmente definiu na Cakto.
+ * Configure aqui apenas o que você realmente definiu no checkout.
  */
 export const GUARANTEE_DAYS = 0;
 
@@ -131,10 +130,13 @@ export const hasCheckout = CAKTO_CHECKOUT_URL.trim().length > 0;
 /** true quando há garantia para exibir */
 export const hasGuarantee = GUARANTEE_DAYS > 0;
 
+/** true quando há um preço definido para exibir na página */
+export const hasPrice = PRODUCT.price.trim().length > 0;
+
 /** Preço pronto para exibir, com prefixo. Ex.: 'R$ 39,90' */
-export const priceLabel = PRODUCT.price.trim()
+export const priceLabel = hasPrice
   ? `${PRODUCT.currencyPrefix} ${PRODUCT.price.trim()}`
-  : 'Consulte o valor';
+  : '';
 
 export const priceFromLabel = PRODUCT.priceFrom.trim()
   ? `${PRODUCT.currencyPrefix} ${PRODUCT.priceFrom.trim()}`

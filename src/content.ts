@@ -36,8 +36,8 @@ export const HERO = {
   eyebrow: 'Guia digital de confeitaria',
   title: PRODUCT.item,
   lead:
-    'Aprenda a preparar um Morango Cravejado irresistível — recheio cremoso, ' +
-    'chocolate e o acabamento cravejado que faz o produto parar o olhar.',
+    'Aprenda a preparar um Morango Cravejado irresistível — morango fresco, ' +
+    'recheio cremoso, chocolate branco e o acabamento cravejado que faz o produto parar o olhar.',
   bullets: ['Passo a passo completo', 'Do morango à precificação', 'Acesso imediato no celular'],
   note: 'Conteúdo digital • Acesso vitalício • Pagamento único',
 };
@@ -49,12 +49,12 @@ export const HERO = {
 export const DESIRE = {
   headline: 'Você não consegue olhar e não sentir vontade de provar.',
   sub:
-    'Um morango inteiro no ponto certo, envolvido em creme e chocolate, ' +
-    'cravejado até brilhar. É bonito antes de ser doce.',
+    'Um morango inteiro no ponto certo, envolvido em creme e chocolate branco, ' +
+    'cravejado até brilhar como pequenas pedras. É bonito antes de ser doce.',
   captions: [
-    { title: 'O morango', text: 'Inteiro, firme, vermelho por dentro.' },
-    { title: 'O recheio', text: 'Cremoso, envolvente, na medida.' },
-    { title: 'O cravejado', text: 'Textura e brilho que chamam atenção.' },
+    { title: 'O morango', text: 'Inteiro, firme, vermelho no centro.' },
+    { title: 'O recheio', text: 'Cremoso, envolvente, no ponto certo.' },
+    { title: 'O cravejado', text: 'Textura e brilho que param o scroll.' },
   ],
 };
 
@@ -71,7 +71,7 @@ export const TECHNIQUE = {
     {
       n: '01',
       name: 'Morango',
-      text: 'A escolha e o preparo da fruta definem a aparência e a durabilidade do doce.',
+      text: 'A fruta fresca no centro. A escolha e a secagem certas definem a aparência e a durabilidade.',
     },
     {
       n: '02',
@@ -80,13 +80,13 @@ export const TECHNIQUE = {
     },
     {
       n: '03',
-      name: 'Chocolate',
+      name: 'Chocolate branco',
       text: 'A cobertura sela o doce, dá firmeza e cria a superfície para o cravejado.',
     },
     {
       n: '04',
       name: 'Cravejado',
-      text: 'O acabamento final — a textura cristalizada que dá identidade ao produto.',
+      text: 'Calda de açúcar que vira cristais — o acabamento que dá nome e identidade ao doce.',
     },
   ],
   disclaimer: 'As proporções, os pontos e o passo a passo completo fazem parte do guia.',
@@ -100,21 +100,21 @@ export const LEARN = {
   headline: 'O que você vai aprender',
   sub: 'Um caminho completo, do primeiro morango à venda.',
   items: [
-    { n: '01', title: 'Escolha do morango', text: 'Como selecionar a fruta ideal em tamanho, ponto e aparência.' },
-    { n: '02', title: 'Higienização', text: 'O processo correto para conservar melhor e vender com segurança.' },
-    { n: '03', title: 'Recheios', text: 'As bases cremosas que envolvem o morango e sustentam a modelagem.' },
+    { n: '01', title: 'Escolha do morango', text: 'Como selecionar a fruta ideal em firmeza, ponto e tamanho.' },
+    { n: '02', title: 'Higienização e secagem', text: 'O processo correto para conservar melhor e vender com segurança.' },
+    { n: '03', title: 'Recheios', text: 'Duas bases cremosas: uma clássica e uma versão cítrica.' },
     { n: '04', title: 'Modelagem', text: 'Como dar forma e deixar todos os doces no mesmo padrão.' },
-    { n: '05', title: 'Calda vidrada', text: 'O preparo da calda que vira o acabamento cristalizado.' },
-    { n: '06', title: 'Cravejado', text: 'A técnica que cria a textura e o brilho que param o scroll.' },
-    { n: '07', title: 'Chocolate', text: 'Como trabalhar a cobertura para selar e firmar o doce.' },
+    { n: '05', title: 'Calda vidrada', text: 'O preparo da calda de açúcar que vira o acabamento cristalizado.' },
+    { n: '06', title: 'Cravejado', text: 'A técnica que transforma a calda nos cristais que param o scroll.' },
+    { n: '07', title: 'Chocolate branco', text: 'Como trabalhar a cobertura para selar e firmar o doce.' },
     { n: '08', title: 'Acabamento', text: 'Os detalhes finais que deixam o produto com cara de vitrine.' },
-    { n: '09', title: 'Conservação', text: 'Validade, armazenamento e o que fazer para durar mais.' },
+    { n: '09', title: 'Conservação', text: 'Validade real, armazenamento e o que fazer para durar mais.' },
     { n: '10', title: 'Embalagem', text: 'Como embalar para proteger, transportar e valorizar o doce.' },
     { n: '11', title: 'Delivery', text: 'Cuidados para o doce chegar inteiro na casa do cliente.' },
     { n: '12', title: 'Precificação', text: 'Como calcular o custo real antes de definir o preço.' },
-    { n: '13', title: 'Estratégias de venda', text: 'Formas de apresentar, divulgar e vender o seu Morango Cravejado.' },
+    { n: '13', title: 'Estratégias de venda', text: 'Como apresentar, divulgar e vender o seu Morango Cravejado.' },
   ],
-  disclaimer: 'A página apresenta o conteúdo. O passo a passo detalhado está dentro do guia.',
+  disclaimer: 'A página apresenta o conteúdo. O passo a passo detalhado, as receitas e as vídeo-aulas estão dentro do guia.',
 };
 
 /* -------------------------------------------------------------------------- */
@@ -127,10 +127,10 @@ export const FINISH = {
     'O cravejado não é enfeite. É o que dá textura, brilho e identidade ao produto — ' +
     'e o que faz alguém parar para olhar de novo.',
   steps: [
-    { n: '1', name: 'Calda', text: 'Uma calda no ponto certo, preparada para cristalizar.' },
-    { n: '2', name: 'Cristalização', text: 'O resfriamento transforma a calda em uma placa quebradiça.' },
+    { n: '1', name: 'Calda', text: 'Uma calda de açúcar no ponto certo, espalhada em camada fina.' },
+    { n: '2', name: 'Cristalização', text: 'Ao esfriar, a calda vira uma placa rígida e quebradiça.' },
     { n: '3', name: 'Cristais', text: 'A placa é quebrada em cristais irregulares e brilhantes.' },
-    { n: '4', name: 'Acabamento', text: 'Os cristais cobrem o doce e criam a superfície cravejada.' },
+    { n: '4', name: 'Acabamento', text: 'Os cristais entram no chocolate e cobrem o doce por inteiro.' },
   ],
 };
 
@@ -142,8 +142,8 @@ export const PROCESS = {
   headlineTop: 'Não é só aprender uma receita.',
   headlineBottom: 'É aprender o processo.',
   intro:
-    'Fazer um morango bonito uma vez é sorte. Fazer sempre igual, embalar bem, ' +
-    'conservar e vender com preço certo é processo. O guia trata das duas coisas.',
+    'Fazer um morango bonito uma vez é sorte. Fazer sempre no mesmo padrão, ' +
+    'embalar bem, conservar e vender com preço certo é processo. O guia trata das duas coisas.',
   checks: [
     'Preparo', 'Montagem', 'Acabamento', 'Padronização',
     'Conservação', 'Embalagem', 'Precificação', 'Venda',
@@ -203,15 +203,15 @@ export const PRODUCT_SECTION = {
   format: PRODUCT.format,
   tagline: `Seu guia para dominar o processo do ${PRODUCT.item}.`,
   description:
-    'Um material digital, direto e organizado por etapas. Você abre no celular ou no ' +
-    'computador, acompanha na ordem e volta sempre que precisar.',
+    'Um material digital, direto e organizado por etapas, com 5 receitas-base e 3 vídeo-aulas. ' +
+    'Você abre no celular ou no computador, acompanha na ordem e volta sempre que precisar.',
   highlights: [
-    'Passo a passo por etapa',
-    'Receitas-base do recheio',
+    'Guia com 11 etapas',
+    '5 receitas-base',
+    '3 vídeo-aulas',
     'Técnica do cravejado',
     'Conservação e embalagem',
-    'Método de precificação',
-    'Estratégias de venda',
+    'Precificação e venda',
   ],
 };
 
@@ -224,19 +224,20 @@ export const OFFER = {
   title: `${PRODUCT.name} — ${PRODUCT.item}`,
   subtitle: 'Tudo o que está incluído no guia digital:',
   includes: [
-    'Guia completo do Morango Cravejado',
-    'Receitas-base do recheio',
-    'Técnicas de preparo e ponto',
+    'Guia completo do Morango Cravejado (11 etapas)',
+    '5 receitas-base: recheios, calda e chocolate',
+    '3 vídeo-aulas passo a passo',
+    '2 sabores de recheio (clássico e cítrico)',
+    'Técnica da calda vidrada e do cravejado',
     'Modelagem e padronização',
-    'Calda vidrada e cravejado',
     'Acabamento de vitrine',
-    'Conservação e validade',
-    'Embalagem e delivery',
-    'Método de precificação',
-    'Estratégias de venda',
+    'Conservação, validade e embalagem',
+    'Produção para delivery',
+    'Estratégias de venda e divulgação',
   ],
   priceCaption: 'Pagamento único • Acesso imediato',
-  afterPriceNote: 'Compra processada com segurança pela Cakto.',
+  afterPriceNote: 'Acesso liberado por e-mail assim que o pagamento é confirmado.',
+  noPriceNote: 'Toque no botão para ver a oferta completa.',
 };
 
 /* -------------------------------------------------------------------------- */
@@ -258,15 +259,15 @@ export const GUARANTEE = {
 export const FAQ = [
   {
     q: 'É um produto digital?',
-    a: 'Sim. É um guia digital. Não enviamos nada pelos Correios — o acesso é online.',
+    a: 'Sim. É um guia digital, com material escrito e vídeo-aulas. Não enviamos nada pelos Correios — o acesso é online.',
   },
   {
     q: 'Como eu recebo o acesso?',
-    a: 'Assim que o pagamento é confirmado pela Cakto, o acesso é liberado no e-mail que você usar na compra.',
+    a: 'Assim que o pagamento é confirmado, o acesso é liberado automaticamente no e-mail que você usar na compra.',
   },
   {
     q: 'Consigo acessar pelo celular?',
-    a: 'Sim. O conteúdo foi pensado para ser acompanhado pelo celular, tablet ou computador.',
+    a: 'Sim. O conteúdo foi pensado para ser acompanhado pelo celular, tablet ou computador, e fica disponível para você rever quando quiser.',
   },
   {
     q: 'Preciso ter experiência com confeitaria?',
@@ -274,7 +275,7 @@ export const FAQ = [
   },
   {
     q: 'O conteúdo ensina o Morango Cravejado completo?',
-    a: 'Sim. Do preparo do morango ao acabamento cravejado, incluindo recheio, modelagem, chocolate e finalização.',
+    a: 'Sim. São 11 etapas, da escolha do morango ao acabamento cravejado, mais 5 receitas-base (recheios, calda e chocolate) e 3 vídeo-aulas.',
   },
   {
     q: 'O guia fala sobre precificação?',
@@ -286,7 +287,7 @@ export const FAQ = [
   },
   {
     q: 'Como funciona o pagamento?',
-    a: 'O pagamento é feito na Cakto, que aceita cartão, Pix e boleto. A confirmação do Pix e do cartão costuma ser na hora.',
+    a: 'O pagamento é feito em ambiente seguro e aceita cartão, Pix e boleto. No Pix e no cartão, a confirmação costuma ser na hora.',
   },
 ];
 

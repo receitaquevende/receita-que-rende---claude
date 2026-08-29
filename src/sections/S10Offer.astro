@@ -6,7 +6,7 @@ import {
   PRODUCT,
   priceLabel,
   priceFromLabel,
-  hasCheckout,
+  hasPrice,
   hasGuarantee,
   GUARANTEE_DAYS,
 } from '../config';
@@ -32,14 +32,19 @@ import {
     </div>
 
     <div class="offer__buy">
-      <div class="offer__price">
-        {priceFromLabel && <span class="offer__from">de {priceFromLabel}</span>}
-        <span class="offer__now">
-          {hasCheckout ? priceLabel : 'Valor na Cakto'}
-        </span>
-        {PRODUCT.installments && <span class="offer__inst">{PRODUCT.installments}</span>}
-        <span class="offer__price-cap">{OFFER.priceCaption}</span>
-      </div>
+      {hasPrice ? (
+        <div class="offer__price">
+          {priceFromLabel && <span class="offer__from">de {priceFromLabel}</span>}
+          <span class="offer__now">{priceLabel}</span>
+          {PRODUCT.installments && <span class="offer__inst">{PRODUCT.installments}</span>}
+          <span class="offer__price-cap">{OFFER.priceCaption}</span>
+        </div>
+      ) : (
+        <div class="offer__price offer__price--noprice">
+          <span class="offer__now-alt">Guia digital completo</span>
+          <span class="offer__price-cap">{OFFER.priceCaption}</span>
+        </div>
+      )}
 
       <Cta size="lg" block location="offer">{CTA_LABEL.offer}</Cta>
 
@@ -120,6 +125,14 @@ import {
     font-variation-settings: 'SOFT' 40;
   }
   .offer__inst { display: block; font-size: .95rem; color: var(--ink-soft); margin-top: .25rem; }
+  .offer__now-alt {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.5rem, 1.2rem + 1.6vw, 2rem);
+    color: var(--brand);
+    line-height: 1.15;
+  }
   .offer__price-cap {
     display: block;
     margin-top: .6rem;

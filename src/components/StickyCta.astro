@@ -5,14 +5,14 @@
  */
 import Cta from './Cta.astro';
 import { CTA_LABEL } from '../content';
-import { priceLabel, hasCheckout } from '../config';
+import { PRODUCT, priceLabel, hasPrice } from '../config';
 ---
 
 <div class="sticky-cta" data-sticky-cta hidden>
   <div class="sticky-cta__inner">
     <div class="sticky-cta__text">
-      <span class="sticky-cta__product">Morango Cravejado</span>
-      <span class="sticky-cta__price">{hasCheckout ? priceLabel : 'Guia digital'}</span>
+      <span class="sticky-cta__product">{PRODUCT.item}</span>
+      <span class="sticky-cta__price">{hasPrice ? priceLabel : 'Guia digital'}</span>
     </div>
     <Cta size="md" location="sticky">{CTA_LABEL.sticky}</Cta>
   </div>

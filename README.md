@@ -2,7 +2,12 @@
 
 Página de vendas (uma página) para o guia digital **Receita Que Rende — Morango Cravejado**.
 Feita em [Astro](https://astro.build): site estático, sem backend, componentizada e
-mobile-first. O fluxo é: anúncio → esta página → checkout na **Cakto**.
+mobile-first. O fluxo é: anúncio → esta página → link de pagamento.
+
+> A página **não menciona** a plataforma de checkout no texto. O link de pagamento
+> atual é da Cakto (`pay.cakto.com.br/...`) e fica só no `href` dos botões, em
+> `src/config.ts`. Para esconder também o domínio, use um subdomínio próprio
+> redirecionando para o checkout (ver seção 5).
 
 > Este projeto é **só a página de vendas**. Não contém a receita, área de membros,
 > login nem checkout próprio.
@@ -31,20 +36,22 @@ npm run preview
 
 Tudo o que você precisa mexer está em **`src/config.ts`**.
 
-### Checkout (obrigatório)
+### Pagamento e preço
 
 ```ts
 export const PRODUCT = {
   // ...
-  price: '39,90',                 // valor à vista (só o número)
+  price: '39,90',                 // valor à vista (só o número). Vazio = a oferta não mostra preço.
   priceFrom: '97,00',             // opcional — preço "de" riscado
   installments: '12x de R$ 4,03', // opcional
-  checkoutUrl: 'https://pay.cakto.com.br/SEU_CODIGO',
+  checkoutUrl: 'https://pay.cakto.com.br/msshn7m_1071078',
 };
 ```
 
-Enquanto `checkoutUrl` estiver vazio, todos os botões avisam que o checkout
-não foi configurado (em vez de levar o visitante para lugar nenhum).
+- O link de pagamento **já está preenchido**. Para trocar, é só editar `checkoutUrl`.
+- **Defina o `price`** — sem ele, a seção de oferta fica sem valor (só o botão).
+- Enquanto `checkoutUrl` estiver vazio, os botões rolam a página até a oferta
+  em vez de levar o visitante para lugar nenhum.
 
 ### Garantia (opcional)
 
@@ -123,17 +130,25 @@ URLs limpas, cache e headers. Framework detectado automaticamente (Astro).
 Depois de publicar, atualize `SITE.url` em `src/config.ts` e refaça o deploy
 para os links canônicos e o sitemap ficarem certos.
 
+### Esconder o domínio do checkout (opcional)
+
+O texto da página não cita nenhuma plataforma. O único lugar onde o domínio
+`pay.cakto.com.br` aparece é no `href` dos botões. Para trocar por um endereço
+próprio, crie um subdomínio (ex.: `pagamento.receitaquerende.com.br`) com
+redirecionamento 301 para o link da Cakto e coloque esse subdomínio em
+`checkoutUrl`.
+
 ---
 
 ## 6. Checklist antes de anunciar
 
-- [ ] `CAKTO_CHECKOUT_URL` preenchido e testado com uma compra real
-- [ ] `PRODUCT_PRICE` (e parcelas, se houver) conferido
+- [ ] `checkoutUrl` testado com uma compra real
+- [ ] `price` (e parcelas, se houver) preenchido e conferido
 - [ ] `SITE.url` com o domínio final
 - [ ] `metaPixelId` preenchido e evento de checkout disparando
 - [ ] dados do responsável em `LEGAL` preenchidos
 - [ ] `/termos` e `/privacidade` revisados
-- [ ] `GUARANTEE_DAYS` igual ao que está configurado na Cakto (ou 0)
+- [ ] `GUARANTEE_DAYS` igual ao que está configurado no checkout (ou 0)
 - [ ] `public/og.jpg` e favicon conferidos
 - [ ] e-mail de suporte em domínio próprio
 

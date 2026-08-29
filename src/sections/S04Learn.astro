@@ -1,0 +1,52 @@
+---
+import Section from '../components/Section.astro';
+import Card from '../components/Card.astro';
+import Cta from '../components/Cta.astro';
+import { LEARN, CTA_LABEL } from '../content';
+---
+
+<Section id="o-que-aprende" tone="paper" class="learn">
+  <div class="section-head section-head--center">
+    <span class="eyebrow" data-reveal>O conteúdo</span>
+    <h2 class="h1" data-reveal style="--reveal-delay:80ms">{LEARN.headline}</h2>
+    <hr class="divider-mark" data-reveal style="--reveal-delay:140ms" />
+    <p class="lead" data-reveal style="--reveal-delay:180ms">{LEARN.sub}</p>
+  </div>
+
+  <div class="learn__grid">
+    {LEARN.items.map((item, i) => (
+      <Card n={item.n} title={item.title} variant="numbered" revealDelay={(i % 3) * 80}>
+        {item.text}
+      </Card>
+    ))}
+  </div>
+
+  <div class="learn__foot" data-reveal>
+    <p class="learn__disclaimer">{LEARN.disclaimer}</p>
+    <Cta size="lg" location="learn">{CTA_LABEL.hero}</Cta>
+  </div>
+</Section>
+
+<style>
+  .learn__grid {
+    display: grid;
+    gap: clamp(.9rem, 2vw, 1.4rem);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  }
+  @media (min-width: 720px) { .learn__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .learn__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .learn__foot {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+  }
+  .learn__disclaimer {
+    font-size: .88rem;
+    color: var(--ink-faint);
+    max-width: 52ch;
+  }
+</style>

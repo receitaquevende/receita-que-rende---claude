@@ -1,0 +1,131 @@
+---
+/**
+ * Botão / link presentacional.
+ * Renderiza <a> quando recebe `href`, senão <button>.
+ */
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'link';
+  size?: 'md' | 'lg';
+  block?: boolean;
+  arrow?: boolean;
+  class?: string;
+  id?: string;
+  type?: 'button' | 'submit';
+  target?: string;
+  rel?: string;
+  dataAttrs?: Record<string, string | number | boolean>;
+  ariaLabel?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  block = false,
+  arrow = false,
+  class: klass = '',
+  id,
+  type = 'button',
+  target,
+  rel,
+  dataAttrs = {},
+  ariaLabel,
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+const cls = ['btn', `btn--${variant}`, `btn--${size}`, block && 'btn--block', klass].filter(Boolean).join(' ');
+---
+
+<Tag
+  class={cls}
+  id={id}
+  href={href}
+  target={target}
+  rel={rel ?? (target === '_blank' ? 'noopener' : undefined)}
+  type={href ? undefined : type}
+  aria-label={ariaLabel}
+  {...dataAttrs}
+>
+  <span class="btn__label"><slot /></span>
+  {arrow && (
+    <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  )}
+</Tag>
+
+<style>
+  .btn {
+    --btn-bg: var(--brand);
+    --btn-fg: var(--white);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .6em;
+    font-family: var(--font-sans);
+    font-weight: 640;
+    letter-spacing: .005em;
+    line-height: 1;
+    text-align: center;
+    color: var(--btn-fg);
+    background: var(--btn-bg);
+    border-radius: 999px;
+    padding: 1.05em 1.9em;
+    transition: transform .25s var(--ease), box-shadow .25s var(--ease), background-color .25s var(--ease), color .25s var(--ease);
+    box-shadow: 0 1px 2px hsl(var(--shadow-hue) / .12), 0 10px 26px -6px hsl(340 55% 30% / .38);
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0) 42%);
+    opacity: .9;
+    z-index: -1;
+  }
+  .btn__label { display: inline-block; }
+  .btn__arrow { width: 1.15em; height: 1.15em; transition: transform .3s var(--ease); }
+
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 2px 4px hsl(var(--shadow-hue) / .14), 0 18px 40px -8px hsl(340 55% 30% / .46); }
+  .btn:hover .btn__arrow { transform: translateX(4px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn--secondary {
+    --btn-bg: var(--cocoa);
+    --btn-fg: var(--cream-50);
+    box-shadow: var(--shadow-md);
+  }
+  .btn--ghost {
+    --btn-bg: transparent;
+    --btn-fg: var(--cocoa);
+    box-shadow: inset 0 0 0 1.5px var(--line-strong);
+  }
+  .btn--ghost::before { display: none; }
+  .btn--ghost:hover { --btn-bg: var(--paper); box-shadow: inset 0 0 0 1.5px var(--brand), var(--shadow-sm); --btn-fg: var(--brand); }
+
+  .btn--link {
+    --btn-bg: transparent;
+    --btn-fg: var(--brand);
+    padding: .3em 0;
+    border-radius: 0;
+    box-shadow: none;
+    font-weight: 620;
+  }
+  .btn--link::before { display: none; }
+  .btn--link:hover { transform: none; text-decoration: underline; text-underline-offset: 4px; }
+
+  .btn--lg {
+    font-size: 1.075rem;
+    padding: 1.2em 2.3em;
+  }
+  .btn--md { font-size: .98rem; }
+
+  .btn--block { display: flex; width: 100%; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn, .btn__arrow { transition: none; }
+    .btn:hover { transform: none; }
+  }
+</style>

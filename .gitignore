@@ -1,0 +1,25 @@
+# build output
+dist/
+.output/
+
+# dependencies
+node_modules/
+
+# generated types
+.astro/
+
+# env
+.env
+.env.production
+.env.*.local
+
+# os / editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# vercel / netlify
+.vercel/
+.netlify/

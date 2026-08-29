@@ -1,0 +1,125 @@
+---
+import Logo from './Logo.astro';
+import Cta from './Cta.astro';
+import { NAV, CTA_LABEL } from '../content';
+
+interface Props {
+  /** true quando a página começa com um hero que já mostra a marca (home). */
+  overHero?: boolean;
+}
+const { overHero = false } = Astro.props;
+---
+
+<header class="site-header" data-header data-over-hero={overHero ? '' : undefined}>
+  <div class="site-header__inner container">
+    <a href="#topo" class="site-header__logo" aria-label="Receita Que Rende — início">
+      <Logo variant="full" />
+    </a>
+
+    <nav class="site-header__nav" aria-label="Seções">
+      {NAV.map((item) => (
+        <a href={item.href} class="site-header__link">{item.label}</a>
+      ))}
+    </nav>
+
+    <div class="site-header__cta">
+      <Cta size="md" location="header">{CTA_LABEL.hero}</Cta>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--sticky-h);
+    display: flex;
+    align-items: center;
+    transition: background-color .35s var(--ease), box-shadow .35s var(--ease), backdrop-filter .35s var(--ease);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .site-header__logo {
+    display: inline-flex;
+    transition: opacity .3s var(--ease), transform .3s var(--ease);
+  }
+  .site-header__logo :global(.logo--full) { font-size: 1.15rem; }
+
+  /* na home, o hero já traz a marca — o logo do header só entra ao rolar */
+  .site-header[data-over-hero]:not([data-stuck]) .site-header__logo {
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+  }
+
+  .site-header__nav {
+    display: none;
+    gap: 1.9rem;
+    margin-left: auto;
+    margin-right: 1.5rem;
+  }
+  .site-header__link {
+    font-size: .92rem;
+    font-weight: 560;
+    color: var(--ink-soft);
+    position: relative;
+    padding: .2rem 0;
+    transition: color .25s var(--ease);
+  }
+  .site-header__link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -2px;
+    width: 100%; height: 1.5px;
+    background: var(--brand);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s var(--ease);
+  }
+  .site-header__link:hover { color: var(--brand); }
+  .site-header__link:hover::after { transform: scaleX(1); }
+
+  .site-header__cta :global(.btn) { padding-block: .7em; padding-inline: 1.3em; }
+
+  /* sobre o hero (mobile/tablet): header limpo — o hero e a barra fixa já têm CTA */
+  @media (max-width: 899px) {
+    .site-header[data-over-hero]:not([data-stuck]) .site-header__cta { display: none; }
+    .site-header[data-over-hero]:not([data-stuck]) { pointer-events: none; }
+  }
+
+  /* estado "rolou a página" */
+  .site-header[data-stuck] {
+    background: hsl(40 46% 96% / .82);
+    backdrop-filter: blur(12px) saturate(1.3);
+    box-shadow: 0 1px 0 var(--line), 0 10px 30px -18px hsl(var(--shadow-hue) / .4);
+  }
+
+  @media (max-width: 560px) {
+    .site-header__inner { gap: .75rem; }
+    .site-header__cta :global(.btn) { font-size: .8rem; padding-inline: 1em; white-space: nowrap; }
+    .site-header__logo :global(.logo--full) { font-size: 1rem; }
+    .site-header__logo :global(.logo__line1) { font-size: .3em; }
+  }
+  @media (min-width: 940px) {
+    .site-header__nav { display: flex; }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  if (header) {
+    const onScroll = () => {
+      if (window.scrollY > 24) header.setAttribute('data-stuck', '');
+      else header.removeAttribute('data-stuck');
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>

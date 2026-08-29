@@ -1,0 +1,68 @@
+---
+import Section from '../components/Section.astro';
+import { GUARANTEE } from '../content';
+import { GUARANTEE_DAYS, hasGuarantee } from '../config';
+
+/* Só renderiza quando GUARANTEE_DAYS > 0 (config.ts). */
+---
+
+{hasGuarantee && (
+  <Section id="garantia" tone="paper" class="guar">
+    <div class="guar__inner" data-reveal>
+      <div class="guar__seal" aria-hidden="true">
+        <svg viewBox="0 0 120 120" fill="none">
+          <path d="M60 6l12 9 15-3 6 14 14 6-3 15 9 12-9 12 3 15-14 6-6 14-15-3-12 9-12-9-15 3-6-14-14-6 3-15-9-12 9-12-3-15 14-6 6-14 15 3 12-9Z" fill="var(--brand-wash)" stroke="var(--brand)" stroke-width="2"/>
+          <circle cx="60" cy="60" r="34" stroke="var(--brand-tint)" stroke-width="1.5" stroke-dasharray="2 5"/>
+        </svg>
+        <span class="guar__seal-days">{GUARANTEE_DAYS}<small>dias</small></span>
+      </div>
+      <div>
+        <span class="eyebrow">{GUARANTEE.kicker}</span>
+        <h2 class="h2">{GUARANTEE.title(GUARANTEE_DAYS)}</h2>
+        <p class="lead measure">{GUARANTEE.text(GUARANTEE_DAYS)}</p>
+      </div>
+    </div>
+  </Section>
+)}
+
+<style>
+  .guar__inner {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    max-width: 780px;
+    margin-inline: auto;
+    text-align: center;
+  }
+  @media (min-width: 720px) {
+    .guar__inner { grid-template-columns: auto 1fr; text-align: left; gap: 3rem; }
+  }
+  .guar__seal {
+    position: relative;
+    width: 128px;
+    justify-self: center;
+  }
+  .guar__seal-days {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 2.1rem;
+    line-height: 1;
+    color: var(--brand);
+  }
+  .guar__seal-days small {
+    font-family: var(--font-sans);
+    font-weight: 640;
+    font-size: .58rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    margin-top: .3rem;
+  }
+  .guar__inner .eyebrow { display: block; margin-bottom: .6rem; }
+  .guar__inner h2 { margin-bottom: .8rem; }
+</style>

@@ -1,0 +1,32 @@
+---
+import Section from '../components/Section.astro';
+import Faq from '../components/Faq.astro';
+import { FAQ } from '../content';
+import { LEGAL } from '../config';
+---
+
+<Section id="faq" tone="sunken" width="narrow" class="faqsec">
+  <div class="section-head section-head--center">
+    <span class="eyebrow" data-reveal>Dúvidas</span>
+    <h2 class="h1" data-reveal style="--reveal-delay:80ms">Perguntas frequentes</h2>
+    <hr class="divider-mark" data-reveal style="--reveal-delay:140ms" />
+  </div>
+
+  <Faq items={FAQ} />
+
+  <p class="faqsec__help" data-reveal>
+    Ficou com outra dúvida? Escreva para
+    <a href={`mailto:${LEGAL.supportEmail}`}>{LEGAL.supportEmail}</a>.
+  </p>
+</Section>
+
+<style>
+  .faqsec__help {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: .92rem;
+    color: var(--ink-soft);
+  }
+  .faqsec__help a { color: var(--brand); font-weight: 600; text-underline-offset: 3px; }
+  .faqsec__help a:hover { text-decoration: underline; }
+</style>

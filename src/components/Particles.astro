@@ -1,0 +1,75 @@
+---
+/**
+ * Camada decorativa — cristais / poeira de açúcar flutuando.
+ * Puramente CSS, discreta, desligada em prefers-reduced-motion.
+ */
+interface Props {
+  count?: number;
+  tone?: 'brand' | 'cream' | 'gold';
+  class?: string;
+}
+const { count = 14, tone = 'brand', class: klass = '' } = Astro.props;
+const seeds = Array.from({ length: count }, (_, i) => {
+  const r = (n: number) => ((Math.sin(i * 12.9898 + n * 78.233) * 43758.5453) % 1 + 1) % 1;
+  return {
+    left: (r(1) * 100).toFixed(2),
+    size: (2 + r(2) * 5).toFixed(2),
+    delay: (r(3) * -22).toFixed(2),
+    dur: (14 + r(4) * 16).toFixed(2),
+    drift: (-30 + r(5) * 60).toFixed(1),
+    rot: (r(6) * 360).toFixed(0),
+    op: (0.15 + r(7) * 0.45).toFixed(2),
+  };
+});
+---
+
+<div class:list={['particles', `particles--${tone}`, klass]} aria-hidden="true">
+  {seeds.map((s) => (
+    <span
+      class="particle"
+      style={`
+        left:${s.left}%;
+        --s:${s.size}px;
+        --delay:${s.delay}s;
+        --dur:${s.dur}s;
+        --drift:${s.drift}px;
+        --rot:${s.rot}deg;
+        --op:${s.op};
+      `}
+    />
+  ))}
+</div>
+
+<style>
+  .particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .particle {
+    position: absolute;
+    bottom: -8%;
+    width: var(--s);
+    height: var(--s);
+    border-radius: 2px;
+    opacity: 0;
+    transform: rotate(var(--rot));
+    animation: float var(--dur) linear var(--delay) infinite;
+  }
+  .particles--brand .particle { background: linear-gradient(135deg, var(--brand), var(--brand-tint)); box-shadow: 0 0 6px hsl(340 60% 60% / .3); }
+  .particles--cream .particle { background: linear-gradient(135deg, #fff, var(--cream-300)); box-shadow: 0 0 6px hsl(38 50% 80% / .5); }
+  .particles--gold .particle { background: linear-gradient(135deg, var(--gold), var(--gold-tint)); box-shadow: 0 0 6px hsl(44 55% 60% / .35); }
+
+  @keyframes float {
+    0% { transform: translateY(0) translateX(0) rotate(var(--rot)); opacity: 0; }
+    10% { opacity: var(--op); }
+    90% { opacity: var(--op); }
+    100% { transform: translateY(-118vh) translateX(var(--drift)) rotate(calc(var(--rot) + 180deg)); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .particles { display: none; }
+  }
+</style>

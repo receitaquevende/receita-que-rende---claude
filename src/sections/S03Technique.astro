@@ -1,0 +1,88 @@
+---
+import Section from '../components/Section.astro';
+import Video from '../components/Video.astro';
+import { TECHNIQUE } from '../content';
+---
+
+<Section id="tecnica" tone="sunken" class="tech">
+  <div class="section-head">
+    <span class="eyebrow" data-reveal>A técnica</span>
+    <h2 class="h1 measure-wide" data-reveal style="--reveal-delay:80ms">{TECHNIQUE.headline}</h2>
+    <hr class="divider-mark" data-reveal style="--reveal-delay:140ms" />
+    <p class="lead measure-wide" data-reveal style="--reveal-delay:180ms">{TECHNIQUE.intro}</p>
+  </div>
+
+  <div class="tech__grid">
+    <ol class="tech__layers">
+      {TECHNIQUE.layers.map((layer, i) => (
+        <li class="tech__layer" data-reveal="left" style={`--reveal-delay:${i * 90}ms`}>
+          <span class="tech__n">{layer.n}</span>
+          <div>
+            <h3 class="tech__name">{layer.name}</h3>
+            <p class="tech__text">{layer.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="tech__media" data-reveal="right">
+      <Video name="coating" ratio="9 / 13" caption="Cobertura e corte — o interior aparece" />
+      <p class="tech__disclaimer">{TECHNIQUE.disclaimer}</p>
+    </div>
+  </div>
+</Section>
+
+<style>
+  .tech__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+  }
+  @media (min-width: 920px) {
+    .tech__grid { grid-template-columns: 1fr .82fr; align-items: start; }
+  }
+
+  .tech__layers {
+    display: grid;
+    gap: 0;
+    counter-reset: layer;
+  }
+  .tech__layer {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.4rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .tech__layer:first-child { padding-top: 0; }
+  .tech__layer:last-child { border-bottom: 0; }
+
+  .tech__n {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.4rem;
+    color: var(--brand);
+    line-height: 1;
+    padding-top: .15rem;
+    font-variation-settings: 'SOFT' 20;
+  }
+  .tech__name {
+    font-size: 1.35rem;
+    color: var(--cocoa);
+    margin-bottom: .35rem;
+  }
+  .tech__text { color: var(--ink-soft); font-size: .97rem; max-width: 44ch; }
+
+  .tech__media { position: sticky; top: calc(var(--sticky-h) + 1.5rem); }
+  .tech__disclaimer {
+    margin-top: 1.25rem;
+    font-size: .86rem;
+    color: var(--ink-faint);
+    line-height: 1.6;
+    padding-left: 1rem;
+    border-left: 2px solid var(--brand-tint);
+  }
+  @media (max-width: 919px) {
+    .tech__media { position: static; }
+  }
+</style>

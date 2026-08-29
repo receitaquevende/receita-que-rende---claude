@@ -1,0 +1,28 @@
+---
+import Base from './Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../config';
+
+interface Props { title: string; updated?: string; }
+const { title, updated } = Astro.props;
+const fullTitle = `${title} | ${SITE.shortName}`;
+---
+
+<Base title={fullTitle} noindex>
+  <Header />
+  <main id="conteudo" class="section section--paper">
+    <div class="container container--narrow">
+      <article class="prose">
+        <h1>{title}</h1>
+        {updated && <p class="updated">Última atualização: {updated}</p>}
+        <slot />
+        <a href="/" class="back">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Voltar para a página inicial
+        </a>
+      </article>
+    </div>
+  </main>
+  <Footer />
+</Base>

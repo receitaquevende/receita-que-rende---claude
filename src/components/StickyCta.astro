@@ -1,0 +1,106 @@
+---
+/**
+ * Barra de CTA fixa no rodapé (mobile). Aparece depois que o visitante
+ * passa da primeira dobra e some quando a seção de oferta está na tela.
+ */
+import Cta from './Cta.astro';
+import { CTA_LABEL } from '../content';
+import { priceLabel, hasCheckout } from '../config';
+---
+
+<div class="sticky-cta" data-sticky-cta hidden>
+  <div class="sticky-cta__inner">
+    <div class="sticky-cta__text">
+      <span class="sticky-cta__product">Morango Cravejado</span>
+      <span class="sticky-cta__price">{hasCheckout ? priceLabel : 'Guia digital'}</span>
+    </div>
+    <Cta size="md" location="sticky">{CTA_LABEL.sticky}</Cta>
+  </div>
+</div>
+
+<style>
+  .sticky-cta {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 90;
+    padding: .7rem clamp(.8rem, 4vw, 1.2rem) calc(.7rem + env(safe-area-inset-bottom));
+    background: hsl(40 46% 96% / .92);
+    backdrop-filter: blur(14px) saturate(1.3);
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -10px 30px -20px hsl(var(--shadow-hue) / .5);
+    transform: translateY(120%);
+    transition: transform .4s var(--ease);
+  }
+  .sticky-cta[data-show] { transform: none; }
+
+  .sticky-cta__inner {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    max-width: 34rem;
+    margin-inline: auto;
+  }
+  .sticky-cta__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  .sticky-cta__product {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: .92rem;
+    color: var(--cocoa);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sticky-cta__price {
+    font-size: .74rem;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  .sticky-cta :global(.btn) {
+    margin-left: auto;
+    flex: 1 0 auto;
+    white-space: nowrap;
+    font-size: .92rem;
+    padding-inline: 1.4em;
+  }
+  @media (max-width: 360px) {
+    .sticky-cta__text { display: none; }
+    .sticky-cta :global(.btn) { max-width: none; }
+  }
+
+  @media (min-width: 900px) { .sticky-cta { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .sticky-cta { transition: none; } }
+</style>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-sticky-cta]');
+  const hero = document.querySelector<HTMLElement>('#topo');
+  const offer = document.querySelector<HTMLElement>('#oferta');
+  if (bar) {
+    bar.hidden = false;
+    let pastHero = false;
+    let atOffer = false;
+    const sync = () => bar.toggleAttribute('data-show', pastHero && !atOffer);
+
+    if (hero && 'IntersectionObserver' in window) {
+      new IntersectionObserver(
+        ([e]) => { pastHero = !e.isIntersecting; sync(); },
+        { rootMargin: '-40% 0px 0px 0px' }
+      ).observe(hero);
+    } else {
+      pastHero = true;
+    }
+    if (offer && 'IntersectionObserver' in window) {
+      new IntersectionObserver(
+        ([e]) => { atOffer = e.isIntersecting; sync(); },
+        { threshold: 0.15 }
+      ).observe(offer);
+    }
+    sync();
+  }
+</script>

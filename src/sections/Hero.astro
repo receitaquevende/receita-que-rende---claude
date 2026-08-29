@@ -1,0 +1,225 @@
+---
+import { Image } from 'astro:assets';
+import Logo from '../components/Logo.astro';
+import Cta from '../components/Cta.astro';
+import Particles from '../components/Particles.astro';
+import { HERO, CTA_LABEL } from '../content';
+import heroWide from '../assets/photos/hero-product.jpg';
+---
+
+<section class="hero" id="topo">
+  <Particles count={10} tone="brand" class="hero__particles" />
+
+  <div class="container hero__grid">
+    <div class="hero__intro">
+      <a href="#topo" class="hero__brand" aria-label="Receita Que Rende">
+        <Logo variant="full" />
+      </a>
+      <p class="eyebrow" data-reveal style="--reveal-delay:60ms">{HERO.eyebrow}</p>
+      <h1 class="hero__title display" data-reveal style="--reveal-delay:120ms">
+        {HERO.title}
+      </h1>
+    </div>
+
+    <div class="hero__visual" data-reveal="scale" style="--reveal-delay:160ms">
+      <figure class="hero__card">
+        <Image
+          src={heroWide}
+          alt="Morango Cravejado cortado ao meio, com o morango vermelho no centro, recheio cremoso, chocolate branco e cristais de morango"
+          widths={[520, 780, 1100, 1400]}
+          sizes="(max-width: 900px) 92vw, 620px"
+          quality={78}
+          loading="eager"
+          fetchpriority="high"
+          class="hero__img"
+        />
+      </figure>
+      <div class="hero__badge" aria-hidden="true">
+        <span class="hero__badge-k">feito à mão</span>
+        <span class="hero__badge-v">morango inteiro</span>
+      </div>
+    </div>
+
+    <div class="hero__pitch">
+      <p class="hero__lead lead measure" data-reveal style="--reveal-delay:200ms">
+        {HERO.lead}
+      </p>
+
+      <div class="hero__actions" data-reveal style="--reveal-delay:260ms">
+        <Cta size="lg" location="hero">{CTA_LABEL.hero}</Cta>
+        <p class="hero__note">{HERO.note}</p>
+      </div>
+
+      <ul class="hero__bullets" data-reveal style="--reveal-delay:320ms">
+        {HERO.bullets.map((b) => (
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {b}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <div class="hero__scallop" aria-hidden="true"></div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: clamp(1.5rem, 4vw, 3rem);
+    padding-bottom: clamp(4rem, 10vw, 7rem);
+    overflow: hidden;
+  }
+  @media (max-width: 899px) {
+    /* o header fica transparente/vazio sobre o hero no mobile — puxa o conteúdo pra cima */
+    .hero { margin-top: calc(-1 * var(--sticky-h)); padding-top: calc(var(--sticky-h) + .5rem); }
+  }
+
+  .hero__grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: clamp(1.75rem, 5vw, 2.5rem);
+  }
+  @media (min-width: 900px) {
+    .hero__grid {
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      grid-template-areas:
+        'intro visual'
+        'pitch visual';
+      grid-template-rows: auto 1fr;
+      column-gap: clamp(3rem, 6vw, 5rem);
+      row-gap: clamp(1.5rem, 3vw, 2.25rem);
+      align-items: start;
+      min-height: min(74svh, 620px);
+    }
+    .hero__intro { grid-area: intro; }
+    .hero__pitch { grid-area: pitch; }
+    .hero__visual { grid-area: visual; align-self: center; }
+  }
+
+  .hero__brand { display: inline-flex; margin-bottom: clamp(1.25rem, 3vw, 1.9rem); }
+  .hero__brand :global(.logo--full) { font-size: 1.3rem; }
+
+  .hero__title {
+    color: var(--cocoa-deep);
+    margin-bottom: 1.1rem;
+    font-variation-settings: 'SOFT' 50, 'WONK' 1;
+  }
+  .hero__title::first-letter { color: var(--brand); }
+
+  .hero__lead { margin-bottom: 1.9rem; }
+
+  .hero__actions { margin-bottom: 2rem; }
+  .hero__note {
+    margin-top: .9rem;
+    font-size: .82rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 560;
+  }
+
+  .hero__bullets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem 1.5rem;
+  }
+  .hero__bullets li {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .9rem;
+    font-weight: 550;
+    color: var(--ink-soft);
+  }
+  .hero__bullets svg { width: 17px; height: 17px; color: var(--brand); flex: none; }
+
+  /* — visual — */
+  .hero__visual { position: relative; }
+  .hero__card {
+    position: relative;
+    margin: 0;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-hero);
+    rotate: -2deg;
+    background: var(--cream-200);
+    aspect-ratio: 1254 / 805;
+  }
+  .hero__card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 1px hsl(38 40% 100% / .3), inset 0 -60px 80px -40px hsl(340 40% 30% / .18);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: kenburns 22s var(--ease) 1s both;
+  }
+  @keyframes kenburns {
+    from { transform: scale(1.12) translate(2%, 1%); }
+    to { transform: scale(1) translate(0, 0); }
+  }
+
+  .hero__badge {
+    position: absolute;
+    left: -6%;
+    bottom: 8%;
+    background: var(--paper);
+    border-radius: var(--radius);
+    padding: .85rem 1.15rem;
+    box-shadow: var(--shadow-lg);
+    rotate: -2deg;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    animation: badge-in 1s var(--ease) 1.2s both;
+  }
+  .hero__badge-k {
+    font-size: .68rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--brand);
+    font-weight: 640;
+  }
+  .hero__badge-v {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--cocoa);
+  }
+  @keyframes badge-in {
+    from { opacity: 0; transform: translateY(14px) scale(.9); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 640px) {
+    .hero__card { aspect-ratio: 4 / 3.4; rotate: -1.5deg; }
+    .hero__badge { left: auto; right: -3%; bottom: -4%; padding: .7rem .9rem; }
+    .hero__bullets { gap: .5rem 1.1rem; }
+  }
+
+  /* — transição para a próxima seção — */
+  .hero__scallop {
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 60px;
+    background: var(--surface);
+    -webkit-mask: radial-gradient(22px at 50% 0, transparent 98%, #000) repeat-x;
+    mask: radial-gradient(22px at 50% 0, transparent 98%, #000) repeat-x;
+    -webkit-mask-size: 44px 60px;
+    mask-size: 44px 60px;
+    z-index: 2;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__img { animation: none; }
+    .hero__badge { animation: none; opacity: 1; }
+  }
+</style>

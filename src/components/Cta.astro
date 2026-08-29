@@ -1,0 +1,111 @@
+---
+/**
+ * Botão de compra — aponta para o checkout da Cakto (config.ts).
+ * Enquanto CAKTO_CHECKOUT_URL estiver vazio, o botão avisa que o checkout
+ * ainda não foi configurado, em vez de levar o visitante para lugar nenhum.
+ */
+import Button from './Button.astro';
+import { PRODUCT, hasCheckout, TRACKING } from '../config';
+
+interface Props {
+  size?: 'md' | 'lg';
+  block?: boolean;
+  variant?: 'primary' | 'secondary';
+  id?: string;
+  location?: string;
+  class?: string;
+}
+
+const {
+  size = 'lg',
+  block = false,
+  variant = 'primary',
+  id,
+  location = 'cta',
+  class: klass = '',
+} = Astro.props;
+
+const label = await Astro.slots.render('default');
+---
+
+<div class:list={['cta', klass]}>
+  <Button
+    href={hasCheckout ? PRODUCT.checkoutUrl : '#oferta'}
+    size={size}
+    block={block}
+    variant={variant}
+    arrow
+    id={id}
+    dataAttrs={{
+      'data-cta': location,
+      'data-checkout': hasCheckout ? 'ready' : 'pending',
+      'data-event': TRACKING.checkoutEvent,
+    }}
+  >
+    <Fragment set:html={label} />
+  </Button>
+  {!hasCheckout && (
+    <p class="cta__pending" hidden data-cta-note>
+      Checkout ainda não configurado — defina <code>CAKTO_CHECKOUT_URL</code> em <code>src/config.ts</code>.
+    </p>
+  )}
+</div>
+
+<style>
+  .cta { display: contents; }
+  .cta__pending {
+    margin-top: .75rem;
+    font-size: .82rem;
+    line-height: 1.5;
+    color: var(--brand-deep);
+    background: var(--brand-wash);
+    border: 1px dashed var(--brand-tint);
+    border-radius: 10px;
+    padding: .6rem .8rem;
+  }
+  .cta__pending code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .92em;
+    background: rgba(255,255,255,.6);
+    padding: .1em .35em;
+    border-radius: 4px;
+  }
+</style>
+
+<script>
+  // Rastreamento de clique + aviso de checkout pendente (delegação única).
+  type W = Window & {
+    fbq?: (...a: unknown[]) => void;
+    gtag?: (...a: unknown[]) => void;
+    dataLayer?: unknown[];
+  };
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement | null;
+    const btn = target?.closest<HTMLAnchorElement>('[data-cta]');
+    if (!btn) return;
+
+    const state = btn.getAttribute('data-checkout');
+    const evName = btn.getAttribute('data-event') || 'InitiateCheckout';
+    const w = window as W;
+
+    if (state === 'pending') {
+      e.preventDefault();
+      const note = btn
+        .closest('.cta')
+        ?.querySelector<HTMLElement>('[data-cta-note]');
+      if (note) note.hidden = false;
+      document.querySelector('#oferta')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
+    try {
+      w.fbq?.('track', evName);
+      w.gtag?.('event', evName === 'InitiateCheckout' ? 'begin_checkout' : evName, {
+        location: btn.getAttribute('data-cta') || 'cta',
+      });
+    } catch {
+      /* rastreamento é opcional — nunca bloqueia o clique */
+    }
+  });
+</script>

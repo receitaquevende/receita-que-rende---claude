@@ -1,0 +1,107 @@
+---
+import Section from '../components/Section.astro';
+import { PRICING } from '../content';
+---
+
+<Section id="precificacao" tone="paper" class="pricing">
+  <div class="section-head section-head--center">
+    <span class="eyebrow" data-reveal>Precificação</span>
+    <h2 class="h1" data-reveal style="--reveal-delay:80ms">{PRICING.headline}</h2>
+    <hr class="divider-mark" data-reveal style="--reveal-delay:140ms" />
+    <p class="lead" data-reveal style="--reveal-delay:180ms">{PRICING.intro}</p>
+  </div>
+
+  <div class="pricing__board" data-reveal="scale">
+    <div class="pricing__row pricing__row--sum">
+      {PRICING.costParts.map((part, i) => (
+        <>
+          {i > 0 && <span class="pricing__op">+</span>}
+          <span class="pricing__chip">{part}</span>
+        </>
+      ))}
+      <span class="pricing__op">=</span>
+      <span class="pricing__chip pricing__chip--result">{PRICING.costResult}</span>
+    </div>
+
+    <div class="pricing__row pricing__row--chain">
+      {PRICING.chain.map((step, i) => (
+        <>
+          {i > 0 && (
+            <svg class="pricing__arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          )}
+          <span class:list={['pricing__chip', i === PRICING.chain.length - 1 && 'pricing__chip--accent']}>{step}</span>
+        </>
+      ))}
+    </div>
+  </div>
+
+  <p class="pricing__note" data-reveal>{PRICING.note}</p>
+</Section>
+
+<style>
+  .pricing__board {
+    background: var(--surface-sunken);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.75rem, 1rem + 4vw, 3.5rem) clamp(1.25rem, 4vw, 2.5rem);
+    display: grid;
+    gap: 2rem;
+    max-width: 780px;
+    margin-inline: auto;
+  }
+
+  .pricing__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: .7rem;
+  }
+  .pricing__row--chain { padding-top: 1.75rem; border-top: 1px dashed var(--line-strong); }
+
+  .pricing__chip {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(.9rem, .8rem + .5vw, 1.05rem);
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: .7em 1.25em;
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
+  }
+  .pricing__chip--result {
+    color: var(--white);
+    background: var(--cocoa);
+    border-color: var(--cocoa);
+  }
+  .pricing__chip--accent {
+    color: var(--white);
+    background: var(--brand);
+    border-color: var(--brand);
+  }
+  .pricing__op {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--brand);
+    font-weight: 600;
+  }
+  .pricing__arrow { width: 22px; height: 22px; color: var(--brand); }
+
+  .pricing__note {
+    margin: 1.75rem auto 0;
+    max-width: 60ch;
+    text-align: center;
+    font-size: .88rem;
+    color: var(--ink-faint);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 520px) {
+    .pricing__row--sum { flex-direction: column; }
+    .pricing__row--sum .pricing__op { transform: rotate(90deg); }
+  }
+</style>

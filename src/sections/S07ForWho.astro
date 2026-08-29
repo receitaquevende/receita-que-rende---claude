@@ -1,0 +1,67 @@
+---
+import Section from '../components/Section.astro';
+import { FOR_WHO } from '../content';
+---
+
+<Section id="para-quem" tone="sunken" class="forwho">
+  <div class="section-head section-head--center">
+    <span class="eyebrow" data-reveal>Para quem é</span>
+    <h2 class="h1" data-reveal style="--reveal-delay:80ms">{FOR_WHO.headline}</h2>
+    <hr class="divider-mark" data-reveal style="--reveal-delay:140ms" />
+  </div>
+
+  <div class="forwho__grid">
+    {FOR_WHO.personas.map((p, i) => (
+      <article class="forwho__card" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+        <span class="forwho__mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.35-9.5-8.5C1 9.5 3 5.5 7 5.5c2 0 3.5 1.2 4.5 2.8C12.5 6.7 14 5.5 16 5.5c4 0 6 4 4.5 7C19 16.65 12 21 12 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        </span>
+        <h3 class="forwho__title">{p.title}</h3>
+        <p class="forwho__text">{p.text}</p>
+      </article>
+    ))}
+  </div>
+</Section>
+
+<style>
+  .forwho__grid {
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 1.6rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  }
+  @media (min-width: 760px) { .forwho__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .forwho__grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .forwho__card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.5rem, 1rem + 2vw, 2.2rem);
+    box-shadow: var(--shadow-sm);
+    transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+  }
+  .forwho__card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+  .forwho__mark {
+    display: grid;
+    place-items: center;
+    width: 46px; height: 46px;
+    border-radius: 14px;
+    background: var(--brand-wash);
+    color: var(--brand);
+    margin-bottom: 1.1rem;
+  }
+  .forwho__mark svg { width: 24px; height: 24px; }
+
+  .forwho__title {
+    font-size: 1.15rem;
+    color: var(--cocoa);
+    margin-bottom: .55rem;
+    line-height: 1.25;
+  }
+  .forwho__text { font-size: .94rem; color: var(--ink-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .forwho__card, .forwho__card:hover { transform: none; transition: none; }
+  }
+</style>

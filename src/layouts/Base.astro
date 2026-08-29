@@ -1,0 +1,131 @@
+---
+import '../styles/global.css';
+import { SITE, TRACKING } from '../config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  path = Astro.url.pathname,
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(path, SITE.url).href;
+const ogImage = new URL(SITE.ogImage, SITE.url).href;
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#FCF8F1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.shortName} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta name="generator" content={Astro.generator} />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: `${SITE.shortName} — Morango Cravejado`,
+        description: SITE.description,
+        image: ogImage,
+        brand: { '@type': 'Brand', name: SITE.shortName },
+        category: 'Guia digital de confeitaria',
+      })}
+    />
+  </head>
+
+  <body>
+    <a href="#conteudo" class="skip-link">Ir para o conteúdo</a>
+    <slot />
+
+    <!-- reveal-on-scroll: leve, respeita prefers-reduced-motion -->
+    <script is:inline>
+      (() => {
+        const els = document.querySelectorAll('[data-reveal]');
+        if (!els.length) return;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce || !('IntersectionObserver' in window)) {
+          els.forEach((el) => el.classList.add('is-visible'));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+        );
+        els.forEach((el) => io.observe(el));
+      })();
+    </script>
+
+    {
+      TRACKING.metaPixelId && (
+        <script is:inline define:vars={{ pid: TRACKING.metaPixelId }}>
+          {`!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',pid);fbq('track','PageView');`}
+        </script>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style="display:none"
+            src={`https://www.facebook.com/tr?id=${TRACKING.metaPixelId}&ev=PageView&noscript=1`}
+            alt=""
+          />
+        </noscript>
+      )
+    }
+
+    {
+      TRACKING.ga4Id && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${TRACKING.ga4Id}`} />
+          <script is:inline define:vars={{ gid: TRACKING.ga4Id }}>
+            {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config',gid)`}
+          </script>
+        </>
+      )
+    }
+
+    <span hidden data-year={year}></span>
+  </body>
+</html>

@@ -1,0 +1,76 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { LEGAL, TRACKING } from '../config';
+
+const usesPixel = Boolean(TRACKING.metaPixelId);
+const usesGa = Boolean(TRACKING.ga4Id);
+---
+
+<Legal title="Política de privacidade">
+  <p class="note">
+    Modelo inicial, alinhado à LGPD. Revise e preencha os dados do responsável
+    em <code>src/config.ts</code> antes de publicar.
+  </p>
+
+  <p>
+    Esta Política explica como {LEGAL.owner}{LEGAL.document ? ` (${LEGAL.document})` : ''}
+    trata os dados pessoais de quem visita esta página e adquire o produto
+    Morango Cravejado.
+  </p>
+
+  <h2>1. Dados que coletamos</h2>
+  <ul>
+    <li><strong>Dados de compra:</strong> nome, e-mail e informações necessárias ao pagamento, coletados e processados pela Cakto.</li>
+    <li><strong>Dados de navegação:</strong> páginas visitadas, origem do acesso e informações do dispositivo, por meio de cookies e ferramentas de medição.</li>
+    <li><strong>Contato:</strong> os dados que você envia ao escrever para o nosso suporte.</li>
+  </ul>
+
+  <h2>2. Como usamos</h2>
+  <ul>
+    <li>Liberar e dar suporte ao seu acesso ao conteúdo;</li>
+    <li>Processar pagamentos e cumprir obrigações legais e fiscais;</li>
+    <li>Medir o desempenho dos anúncios e melhorar a página;</li>
+    <li>Responder às suas solicitações.</li>
+  </ul>
+
+  <h2>3. Cookies e medição</h2>
+  {(usesPixel || usesGa) ? (
+    <p>
+      Utilizamos
+      {usesPixel && <> o <strong>Meta Pixel</strong></>}
+      {usesPixel && usesGa && ' e'}
+      {usesGa && <> o <strong>Google Analytics</strong></>}
+      {' '}para entender como as pessoas chegam e navegam nesta página. Esses
+      serviços podem registrar informações no seu navegador. Você pode bloquear
+      cookies nas configurações do navegador.
+    </p>
+  ) : (
+    <p>
+      Podemos utilizar cookies essenciais ao funcionamento da página e, no
+      futuro, ferramentas de medição de audiência. Qualquer mudança será
+      refletida aqui.
+    </p>
+  )}
+
+  <h2>4. Compartilhamento</h2>
+  <p>
+    Compartilhamos dados apenas com quem é necessário para a operação: a
+    plataforma de pagamento (Cakto), a hospedagem do site e as ferramentas de
+    medição citadas acima. Não vendemos dados pessoais.
+  </p>
+
+  <h2>5. Seus direitos (LGPD)</h2>
+  <p>
+    Você pode solicitar acesso, correção, portabilidade ou exclusão dos seus
+    dados, além de revogar consentimentos, escrevendo para {LEGAL.supportEmail}.
+  </p>
+
+  <h2>6. Segurança e retenção</h2>
+  <p>
+    Adotamos medidas razoáveis para proteger os dados e os mantemos apenas pelo
+    tempo necessário às finalidades acima ou ao cumprimento de obrigações legais.
+  </p>
+
+  <h2>7. Contato</h2>
+  <p>Encarregado de dados / contato: {LEGAL.supportEmail}.</p>
+</Legal>

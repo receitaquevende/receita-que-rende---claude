@@ -1,0 +1,76 @@
+---
+import { Image } from 'astro:assets';
+import Section from '../components/Section.astro';
+import { PROCESS } from '../content';
+import rowThree from '../assets/photos/row-three.jpg';
+---
+
+<Section id="processo" tone="paper" class="process">
+  <div class="process__grid">
+    <div class="process__copy">
+      <h2 class="h1" data-reveal>
+        <span class="process__line">{PROCESS.headlineTop}</span>
+        <span class="process__line process__line--accent">{PROCESS.headlineBottom}</span>
+      </h2>
+      <p class="lead measure" data-reveal style="--reveal-delay:120ms">{PROCESS.intro}</p>
+
+      <ul class="process__checks" data-reveal style="--reveal-delay:200ms">
+        {PROCESS.checks.map((c) => (
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {c}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <figure class="process__figure" data-reveal="right">
+      <Image src={rowThree} alt="Três unidades de Morango Cravejado alinhadas, todas com o mesmo padrão de acabamento"
+        widths={[500, 800, 1000]} sizes="(max-width: 900px) 92vw, 42vw" quality={76} />
+    </figure>
+  </div>
+</Section>
+
+<style>
+  .process__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .process__grid { grid-template-columns: 1.1fr .9fr; }
+  }
+
+  .process__line { display: block; }
+  .process__line--accent { color: var(--brand); font-style: italic; font-variation-settings: 'SOFT' 60, 'WONK' 1; }
+
+  .process__copy .lead { margin-top: 1.2rem; }
+
+  .process__checks {
+    margin-top: 1.8rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: .8rem 1.4rem;
+    max-width: 26rem;
+  }
+  .process__checks li {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    font-weight: 560;
+    color: var(--ink);
+    font-size: .98rem;
+  }
+  .process__checks svg { width: 18px; height: 18px; color: var(--brand); flex: none; }
+
+  .process__figure {
+    margin: 0;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: var(--cream-200);
+    box-shadow: var(--shadow-lg);
+    aspect-ratio: 4 / 5;
+    rotate: 1.5deg;
+  }
+  .process__figure :global(img) { width: 100%; height: 100%; object-fit: cover; }
+</style>

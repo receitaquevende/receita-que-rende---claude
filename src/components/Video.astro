@@ -1,0 +1,149 @@
+---
+/**
+ * Vídeo com thumbnail (poster). O arquivo de vídeo só é baixado no clique —
+ * mantém o carregamento inicial da página leve.
+ * Espera arquivos em /public/media/videos/<name>.mp4 (+ .webm) e
+ * /public/media/posters/<name>.jpg
+ */
+interface Props {
+  name: string;
+  caption?: string;
+  ratio?: string;        // ex.: '9 / 16'
+  loop?: boolean;
+  class?: string;
+  eager?: boolean;
+}
+
+const {
+  name,
+  caption,
+  ratio = '9 / 16',
+  loop = true,
+  class: klass = '',
+  eager = false,
+} = Astro.props;
+
+const mp4 = `/media/videos/${name}.mp4`;
+const webm = `/media/videos/${name}.webm`;
+const poster = `/media/posters/${name}.jpg`;
+---
+
+<figure class:list={['video', klass]}>
+  <div
+    class="video__frame"
+    style={`--ratio:${ratio}`}
+    data-video
+    data-mp4={mp4}
+    data-webm={webm}
+    data-loop={loop ? 'true' : 'false'}
+  >
+    <img
+      class="video__poster"
+      src={poster}
+      alt={caption ? `Prévia: ${caption}` : 'Prévia do vídeo'}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      width="720"
+      height="1280"
+    />
+    <button class="video__play" type="button" aria-label={caption ? `Assistir: ${caption}` : 'Assistir ao vídeo'}>
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor" />
+      </svg>
+    </button>
+  </div>
+  {caption && <figcaption class="video__caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .video { margin: 0; }
+  .video__frame {
+    position: relative;
+    aspect-ratio: var(--ratio);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--cream-200);
+    box-shadow: var(--shadow-lg);
+    isolation: isolate;
+  }
+  .video__poster,
+  .video__frame :global(video) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .video__poster { transition: transform .6s var(--ease), opacity .4s var(--ease); }
+  .video__frame:hover .video__poster { transform: scale(1.03); }
+
+  .video__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 68px;
+    height: 68px;
+    display: grid;
+    place-items: center;
+    color: var(--brand);
+    background: rgba(255, 253, 248, .9);
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    box-shadow: var(--shadow-md);
+    transition: transform .3s var(--ease), background-color .3s var(--ease);
+  }
+  .video__play svg { width: 26px; height: 26px; margin-left: 3px; }
+  .video__frame:hover .video__play { transform: scale(1.08); background: var(--white); }
+  .video__frame.is-playing .video__play,
+  .video__frame.is-playing .video__poster { opacity: 0; pointer-events: none; }
+
+  .video__caption {
+    margin-top: .9rem;
+    font-size: .86rem;
+    color: var(--ink-faint);
+    letter-spacing: .01em;
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video__poster, .video__play { transition: none; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-video]').forEach((frame) => {
+    const btn = frame.querySelector<HTMLButtonElement>('.video__play');
+    if (!btn) return;
+    let loaded = false;
+
+    const start = () => {
+      if (loaded) return;
+      loaded = true;
+      const video = document.createElement('video');
+      video.playsInline = true;
+      video.muted = true;
+      video.loop = frame.dataset.loop === 'true';
+      video.controls = true;
+      video.preload = 'auto';
+      video.setAttribute('aria-label', btn.getAttribute('aria-label') || 'Vídeo');
+
+      const webm = frame.dataset.webm;
+      const mp4 = frame.dataset.mp4;
+      if (webm) {
+        const s = document.createElement('source');
+        s.src = webm; s.type = 'video/webm';
+        video.appendChild(s);
+      }
+      if (mp4) {
+        const s = document.createElement('source');
+        s.src = mp4; s.type = 'video/mp4';
+        video.appendChild(s);
+      }
+      frame.appendChild(video);
+      frame.classList.add('is-playing');
+      video.play().catch(() => { video.controls = true; });
+    };
+
+    btn.addEventListener('click', start);
+  });
+</script>

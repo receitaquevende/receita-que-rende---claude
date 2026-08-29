@@ -1,0 +1,103 @@
+---
+import Section from '../components/Section.astro';
+import Video from '../components/Video.astro';
+import Particles from '../components/Particles.astro';
+import { FINISH } from '../content';
+---
+
+<Section id="acabamento" tone="deep" class="finish" width="full">
+  <Particles count={10} tone="gold" class="finish__particles" />
+  <div class="container finish__inner">
+    <div class="section-head">
+      <span class="eyebrow" data-reveal>O diferencial</span>
+      <h2 class="h1 measure-wide" data-reveal style="--reveal-delay:80ms">{FINISH.headline}</h2>
+      <hr class="divider-mark" data-reveal style="--reveal-delay:140ms" />
+      <p class="lead measure-wide" data-reveal style="--reveal-delay:180ms">{FINISH.sub}</p>
+    </div>
+
+    <div class="finish__grid">
+      <div class="finish__media" data-reveal="scale">
+        <Video name="mixing" ratio="9 / 13" caption="Os cristais entram na cobertura" />
+      </div>
+
+      <ol class="finish__flow" data-flow>
+        {FINISH.steps.map((step, i) => (
+          <li class="finish__step" data-reveal style={`--reveal-delay:${i * 160}ms`}>
+            <span class="finish__dot">{step.n}</span>
+            <div class="finish__step-body">
+              <h3 class="finish__step-name">{step.name}</h3>
+              <p class="finish__step-text">{step.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</Section>
+
+<style>
+  :global(.finish) { overflow: hidden; }
+  .finish__inner { position: relative; z-index: 2; }
+
+  .finish__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4.5rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .finish__grid { grid-template-columns: .8fr 1.2fr; }
+  }
+
+  .finish__media :global(.video__frame) {
+    box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .6);
+  }
+  .finish__media :global(.video__caption) { color: #B7A493; }
+
+  .finish__flow {
+    display: grid;
+    gap: 0;
+    position: relative;
+  }
+  .finish__step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.3rem;
+    padding: 1.35rem 0;
+    position: relative;
+  }
+  .finish__step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 21px;
+    top: 46px;
+    bottom: -6px;
+    width: 2px;
+    background: linear-gradient(var(--gold), transparent);
+    opacity: .5;
+  }
+  .finish__dot {
+    width: 44px; height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold-tint);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    flex: none;
+    position: relative;
+    z-index: 1;
+  }
+  .finish__step-name {
+    color: var(--cream-50);
+    font-size: 1.3rem;
+    margin-bottom: .3rem;
+  }
+  .finish__step-text { color: #C6B4A2; font-size: .95rem; max-width: 46ch; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .finish__particles { display: none; }
+  }
+</style>

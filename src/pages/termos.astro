@@ -1,0 +1,85 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { LEGAL, PRODUCT, GUARANTEE_DAYS, hasGuarantee } from '../config';
+---
+
+<Legal title="Termos de uso">
+  <p class="note">
+    Modelo inicial. Revise com atenção (e, se possível, com apoio jurídico) e
+    preencha os dados do responsável em <code>src/config.ts</code> antes de publicar.
+  </p>
+
+  <p>
+    Estes Termos regulam o acesso e o uso do conteúdo digital
+    <strong>{PRODUCT.name} — {PRODUCT.item}</strong> ("Produto"), oferecido por
+    {LEGAL.owner}{LEGAL.document ? ` (${LEGAL.document})` : ''} ("nós").
+    Ao concluir a compra, você declara que leu e concorda com estas condições.
+  </p>
+
+  <h2>1. O que é o Produto</h2>
+  <p>
+    O Produto é um material digital de caráter educativo sobre o preparo, o
+    acabamento, a conservação, a embalagem e a precificação do Morango Cravejado.
+    O acesso é 100% online — nenhum item físico é enviado.
+  </p>
+
+  <h2>2. Acesso</h2>
+  <p>
+    Após a confirmação do pagamento pela plataforma de checkout (Cakto), o acesso
+    é liberado para o e-mail informado na compra. É responsabilidade do comprador
+    fornecer um e-mail válido e manter seus dados de acesso em segurança.
+  </p>
+
+  <h2>3. Uso permitido</h2>
+  <p>
+    A licença de uso é pessoal e intransferível. Você pode aplicar o conteúdo na
+    sua própria produção, inclusive para fins comerciais (venda dos doces que
+    você produzir). Não é permitido revender, copiar, redistribuir, compartilhar
+    logins ou reproduzir o material, no todo ou em parte, em qualquer canal.
+  </p>
+
+  <h2>4. Propriedade intelectual</h2>
+  <p>
+    Todo o conteúdo, marca, textos, imagens e materiais do Produto são protegidos
+    por direitos autorais e pertencem a {LEGAL.owner}. O uso indevido está sujeito
+    às medidas legais cabíveis.
+  </p>
+
+  <h2>5. Reembolso e arrependimento</h2>
+  {hasGuarantee ? (
+    <p>
+      Você pode solicitar o reembolso em até <strong>{GUARANTEE_DAYS} dias</strong>
+      corridos após a compra, escrevendo para {LEGAL.supportEmail}. O estorno é
+      feito pela mesma forma de pagamento, conforme os prazos da operadora e da
+      plataforma de checkout.
+    </p>
+  ) : (
+    <p>
+      Nos termos do art. 49 do Código de Defesa do Consumidor, você pode desistir
+      da compra em até <strong>7 dias</strong> corridos a partir do acesso ao
+      conteúdo, solicitando o cancelamento pelo e-mail {LEGAL.supportEmail}.
+    </p>
+  )}
+
+  <h2>6. Resultados</h2>
+  <p>
+    O Produto ensina um processo. Ele não promete e não garante vendas,
+    faturamento ou lucro — os resultados dependem da dedicação, da prática, da
+    região e das escolhas de cada pessoa.
+  </p>
+
+  <h2>7. Pagamento</h2>
+  <p>
+    As compras são processadas pela Cakto, que é responsável pelo ambiente de
+    pagamento, pela emissão de cobranças e pelo tratamento dos dados financeiros.
+  </p>
+
+  <h2>8. Suporte</h2>
+  <p>Dúvidas sobre acesso e conteúdo: {LEGAL.supportEmail}.</p>
+
+  <h2>9. Alterações</h2>
+  <p>
+    Estes Termos podem ser atualizados. A versão vigente é sempre a publicada
+    nesta página.
+  </p>
+</Legal>

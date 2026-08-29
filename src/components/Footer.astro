@@ -1,0 +1,72 @@
+---
+import Logo from './Logo.astro';
+import { FOOTER } from '../content';
+import { LEGAL } from '../config';
+
+const year = new Date().getFullYear();
+const range = LEGAL.since && LEGAL.since < year ? `${LEGAL.since}–${year}` : `${year}`;
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div class="site-footer__brand">
+      <Logo variant="full" tone="cream" />
+      <p class="site-footer__tagline">{FOOTER.tagline}</p>
+    </div>
+
+    <nav class="site-footer__links" aria-label="Rodapé">
+      {FOOTER.links.map((l) => <a href={l.href}>{l.label}</a>)}
+      <a href={`mailto:${LEGAL.supportEmail}`}>{LEGAL.supportEmail}</a>
+    </nav>
+
+    <p class="site-footer__disclaimer">{FOOTER.disclaimer}</p>
+
+    <p class="site-footer__legal">
+      © {range} {LEGAL.owner}.
+      {LEGAL.document && <> · {LEGAL.document}</>}
+      {LEGAL.city && <> · {LEGAL.city}</>}
+      · Todos os direitos reservados.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--cocoa-deep);
+    color: #C9B7A6;
+    padding-block: clamp(3rem, 7vw, 4.5rem);
+    font-size: .9rem;
+  }
+  .site-footer__inner {
+    display: grid;
+    gap: 1.6rem;
+    max-width: 780px;
+  }
+  .site-footer__brand :global(.logo--full) { font-size: 1.25rem; }
+  .site-footer__tagline {
+    margin-top: .9rem;
+    color: #B7A493;
+    max-width: 42ch;
+    line-height: 1.6;
+  }
+  .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.4rem;
+  }
+  .site-footer__links a {
+    color: var(--cream-100);
+    font-weight: 550;
+    transition: color .2s var(--ease);
+  }
+  .site-footer__links a:hover { color: var(--brand-tint); }
+  .site-footer__disclaimer {
+    color: #96836F;
+    font-size: .8rem;
+    line-height: 1.65;
+    max-width: 64ch;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(255, 255, 255, .08);
+  }
+  .site-footer__legal { color: #80705F; font-size: .78rem; }
+</style>

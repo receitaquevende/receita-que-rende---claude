@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import Section from '../components/Section.astro';
+import { DESIRE } from '../content';
+import plateFour from '../assets/photos/plate-four.jpg';
+import macroCut from '../assets/photos/macro-cut.jpg';
+import biteCross from '../assets/photos/bite-cross.jpg';
+---
+
+<Section id="o-morango" tone="paper" class="desire">
+  <div class="desire__head">
+    <h2 class="h1 measure-wide" data-reveal>{DESIRE.headline}</h2>
+    <p class="lead measure" data-reveal style="--reveal-delay:120ms">{DESIRE.sub}</p>
+  </div>
+
+  <div class="desire__grid">
+    <figure class="desire__shot desire__shot--tall" data-reveal="scale">
+      <Image src={plateFour} alt="Quatro unidades de Morango Cravejado servidas em um prato de cerâmica, com morangos frescos ao lado"
+        widths={[500, 800, 1100]} sizes="(max-width: 900px) 92vw, 46vw" quality={74} />
+    </figure>
+    <figure class="desire__shot" data-reveal="scale" style="--reveal-delay:90ms">
+      <Image src={macroCut} alt="Close do Morango Cravejado partido, revelando o morango vermelho, o recheio cremoso e o chocolate branco"
+        widths={[400, 700, 900]} sizes="(max-width: 900px) 92vw, 46vw" quality={74} />
+    </figure>
+    <figure class="desire__shot" data-reveal="scale" style="--reveal-delay:180ms">
+      <Image src={biteCross} alt="Mão segurando um Morango Cravejado com uma mordida, mostrando as camadas por dentro"
+        widths={[400, 700, 900]} sizes="(max-width: 900px) 92vw, 46vw" quality={74} />
+    </figure>
+  </div>
+
+  <ul class="desire__captions">
+    {DESIRE.captions.map((c, i) => (
+      <li data-reveal style={`--reveal-delay:${i * 100}ms`}>
+        <span class="desire__cap-title">{c.title}</span>
+        <span class="desire__cap-text">{c.text}</span>
+      </li>
+    ))}
+  </ul>
+</Section>
+
+<style>
+  .desire__head {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+  @media (min-width: 900px) {
+    .desire__head {
+      grid-template-columns: 1.15fr .85fr;
+      align-items: end;
+      gap: 2.5rem;
+    }
+  }
+
+  .desire__grid {
+    display: grid;
+    gap: clamp(.8rem, 2vw, 1.3rem);
+    grid-template-columns: 1fr 1fr;
+  }
+  .desire__shot {
+    margin: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--cream-200);
+    box-shadow: var(--shadow-md);
+    aspect-ratio: 1 / 1;
+  }
+  .desire__shot :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+  .desire__shot:hover :global(img) { transform: scale(1.04); }
+
+  @media (min-width: 700px) {
+    .desire__grid { grid-template-columns: 1.4fr 1fr; grid-template-rows: 1fr 1fr; }
+    .desire__shot--tall { grid-row: 1 / 3; aspect-ratio: auto; }
+    .desire__shot:not(.desire__shot--tall) { aspect-ratio: 16 / 10; }
+  }
+
+  .desire__captions {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+  @media (min-width: 700px) { .desire__captions { grid-template-columns: repeat(3, 1fr); gap: 2rem; } }
+  .desire__captions li {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--brand-tint);
+  }
+  .desire__cap-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--cocoa);
+  }
+  .desire__cap-text { font-size: .92rem; color: var(--ink-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .desire__shot :global(img) { transition: none; }
+  }
+</style>

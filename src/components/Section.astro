@@ -1,0 +1,37 @@
+---
+/**
+ * Casca de seção — espaçamento vertical, fundo e container.
+ */
+interface Props {
+  id?: string;
+  tone?: 'plain' | 'paper' | 'sunken' | 'deep';
+  width?: 'default' | 'narrow' | 'full';
+  grain?: boolean;
+  class?: string;
+  containerClass?: string;
+}
+
+const {
+  id,
+  tone = 'plain',
+  width = 'default',
+  grain = false,
+  class: klass = '',
+  containerClass = '',
+} = Astro.props;
+
+const toneClass = tone !== 'plain' ? `section--${tone}` : '';
+---
+
+<section
+  id={id}
+  class:list={['section', toneClass, grain && 'grain', klass]}
+>
+  {width === 'full' ? (
+    <slot />
+  ) : (
+    <div class:list={['container', width === 'narrow' && 'container--narrow', containerClass]}>
+      <slot />
+    </div>
+  )}
+</section>

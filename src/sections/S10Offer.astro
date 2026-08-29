@@ -1,0 +1,150 @@
+---
+import Section from '../components/Section.astro';
+import Cta from '../components/Cta.astro';
+import { OFFER, CTA_LABEL } from '../content';
+import {
+  PRODUCT,
+  priceLabel,
+  priceFromLabel,
+  hasCheckout,
+  hasGuarantee,
+  GUARANTEE_DAYS,
+} from '../config';
+---
+
+<Section id="oferta" tone="deep" class="offer">
+  <div class="section-head section-head--center">
+    <span class="eyebrow" data-reveal>{OFFER.kicker}</span>
+    <h2 class="h1" data-reveal style="--reveal-delay:80ms">{OFFER.title}</h2>
+  </div>
+
+  <div class="offer__card" data-reveal="scale">
+    <div class="offer__includes">
+      <p class="offer__includes-label">{OFFER.subtitle}</p>
+      <ul>
+        {OFFER.includes.map((item) => (
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="offer__buy">
+      <div class="offer__price">
+        {priceFromLabel && <span class="offer__from">de {priceFromLabel}</span>}
+        <span class="offer__now">
+          {hasCheckout ? priceLabel : 'Valor na Cakto'}
+        </span>
+        {PRODUCT.installments && <span class="offer__inst">{PRODUCT.installments}</span>}
+        <span class="offer__price-cap">{OFFER.priceCaption}</span>
+      </div>
+
+      <Cta size="lg" block location="offer">{CTA_LABEL.offer}</Cta>
+
+      <p class="offer__secure">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        {OFFER.afterPriceNote}
+      </p>
+
+      {hasGuarantee && (
+        <p class="offer__guar">Acompanha {GUARANTEE_DAYS} dias de garantia.</p>
+      )}
+    </div>
+  </div>
+</Section>
+
+<style>
+  .offer__card {
+    display: grid;
+    gap: 0;
+    max-width: 900px;
+    margin-inline: auto;
+    background: var(--paper);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 40px 100px -30px rgba(0, 0, 0, .5);
+    color: var(--ink);
+  }
+  @media (min-width: 780px) {
+    .offer__card { grid-template-columns: 1fr .92fr; }
+  }
+  .offer__buy :global(.btn) { font-size: .98rem; padding-inline: 1.4em; text-wrap: balance; }
+
+  .offer__includes {
+    padding: clamp(1.75rem, 1rem + 4vw, 3rem);
+  }
+  .offer__includes-label {
+    font-weight: 640;
+    color: var(--cocoa);
+    margin-bottom: 1.25rem;
+    font-size: .98rem;
+  }
+  .offer__includes ul { display: grid; gap: .8rem; }
+  .offer__includes li {
+    display: flex;
+    align-items: flex-start;
+    gap: .7rem;
+    font-size: .96rem;
+    color: var(--ink);
+  }
+  .offer__includes svg { width: 19px; height: 19px; color: var(--brand); flex: none; margin-top: 1px; }
+
+  .offer__buy {
+    padding: clamp(1.75rem, 1rem + 4vw, 3rem);
+    background: var(--surface-sunken);
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  @media (min-width: 780px) {
+    .offer__buy { border-top: 0; border-left: 1px solid var(--line); }
+  }
+
+  .offer__price { text-align: center; margin-bottom: 1.5rem; }
+  .offer__from {
+    display: block;
+    text-decoration: line-through;
+    color: var(--ink-faint);
+    font-size: .95rem;
+  }
+  .offer__now {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.4rem, 1.8rem + 3vw, 3.4rem);
+    color: var(--brand);
+    line-height: 1.05;
+    font-variation-settings: 'SOFT' 40;
+  }
+  .offer__inst { display: block; font-size: .95rem; color: var(--ink-soft); margin-top: .25rem; }
+  .offer__price-cap {
+    display: block;
+    margin-top: .6rem;
+    font-size: .78rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 560;
+  }
+
+  .offer__secure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    margin-top: 1rem;
+    font-size: .82rem;
+    color: var(--ink-faint);
+  }
+  .offer__secure svg { width: 15px; height: 15px; }
+  .offer__guar {
+    text-align: center;
+    margin-top: .5rem;
+    font-size: .85rem;
+    color: var(--leaf);
+    font-weight: 560;
+  }
+</style>

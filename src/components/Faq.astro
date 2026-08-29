@@ -1,0 +1,103 @@
+---
+/**
+ * FAQ em <details>/<summary> — acessível e sem JS obrigatório.
+ * Um script leve deixa apenas um item aberto por vez.
+ */
+interface Item { q: string; a: string; }
+interface Props { items: Item[]; class?: string; }
+const { items, class: klass = '' } = Astro.props;
+---
+
+<div class:list={['faq', klass]} data-faq>
+  {items.map((item, i) => (
+    <details class="faq__item" data-reveal style={`--reveal-delay:${i * 45}ms`} name="faq">
+      <summary class="faq__q">
+        <span>{item.q}</span>
+        <svg class="faq__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+        </svg>
+      </summary>
+      <div class="faq__a"><p>{item.a}</p></div>
+    </details>
+  ))}
+</div>
+
+<style>
+  .faq {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+  }
+  .faq__item {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0 clamp(1rem, .8rem + .8vw, 1.5rem);
+    box-shadow: var(--shadow-sm);
+    transition: border-color .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .faq__item[open] {
+    border-color: var(--brand-tint);
+    box-shadow: var(--shadow-md);
+  }
+
+  .faq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.03rem;
+    color: var(--cocoa);
+    line-height: 1.35;
+    cursor: pointer;
+    list-style: none;
+  }
+  .faq__q::-webkit-details-marker { display: none; }
+
+  .faq__icon {
+    flex: none;
+    width: 22px; height: 22px;
+    color: var(--brand);
+    transition: transform .3s var(--ease);
+  }
+  .faq__item[open] .faq__icon { transform: rotate(135deg); }
+
+  .faq__a {
+    overflow: hidden;
+    color: var(--ink-soft);
+    font-size: .97rem;
+    line-height: 1.62;
+  }
+  .faq__a p { padding-bottom: 1.25rem; max-width: 62ch; }
+
+  .faq__item[open] .faq__a { animation: faq-open .4s var(--ease-out); }
+  @keyframes faq-open {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq__icon { transition: none; }
+    .faq__item[open] .faq__a { animation: none; }
+  }
+</style>
+
+<script>
+  // Fallback p/ navegadores sem suporte a <details name> (accordion exclusivo).
+  const supportsName = (() => {
+    const d = document.createElement('details');
+    return 'name' in d;
+  })();
+  if (!supportsName) {
+    document.querySelectorAll<HTMLElement>('[data-faq]').forEach((faq) => {
+      const items = Array.from(faq.querySelectorAll<HTMLDetailsElement>('details'));
+      items.forEach((item) => {
+        item.addEventListener('toggle', () => {
+          if (item.open) items.filter((i) => i !== item).forEach((i) => (i.open = false));
+        });
+      });
+    });
+  }
+</script>

@@ -91,7 +91,7 @@ export const SITE = {
 
 export const TRACKING = {
   /** ID do Pixel da Meta. Vazio = não carrega o script. */
-  metaPixelId: '',
+  metaPixelId: '1374625827598727',
 
   /** ID do Google Analytics 4 (G-XXXXXXX). Vazio = não carrega. */
   ga4Id: '',

@@ -5,7 +5,7 @@
  * em vez de levar o visitante para lugar nenhum.
  */
 import Button from './Button.astro';
-import { PRODUCT, hasCheckout, TRACKING } from '../config';
+import { PRODUCT, hasCheckout } from '../config';
 
 interface Props {
   size?: 'md' | 'lg';
@@ -39,7 +39,6 @@ const label = await Astro.slots.render('default');
     dataAttrs={{
       'data-cta': location,
       'data-checkout': hasCheckout ? 'ready' : 'pending',
-      'data-event': TRACKING.checkoutEvent,
     }}
   >
     <Fragment set:html={label} />
@@ -72,40 +71,5 @@ const label = await Astro.slots.render('default');
   }
 </style>
 
-<script>
-  // Rastreamento de clique + aviso de checkout pendente (delegação única).
-  type W = Window & {
-    fbq?: (...a: unknown[]) => void;
-    gtag?: (...a: unknown[]) => void;
-    dataLayer?: unknown[];
-  };
-
-  document.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement | null;
-    const btn = target?.closest<HTMLAnchorElement>('[data-cta]');
-    if (!btn) return;
-
-    const state = btn.getAttribute('data-checkout');
-    const evName = btn.getAttribute('data-event') || 'InitiateCheckout';
-    const w = window as W;
-
-    if (state === 'pending') {
-      e.preventDefault();
-      const note = btn
-        .closest('.cta')
-        ?.querySelector<HTMLElement>('[data-cta-note]');
-      if (note) note.hidden = false;
-      document.querySelector('#oferta')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
-
-    try {
-      w.fbq?.('track', evName);
-      w.gtag?.('event', evName === 'InitiateCheckout' ? 'begin_checkout' : evName, {
-        location: btn.getAttribute('data-cta') || 'cta',
-      });
-    } catch {
-      /* rastreamento é opcional — nunca bloqueia o clique */
-    }
-  });
-</script>
+{/* O clique é tratado em src/lib/tracking.ts (delegação única no documento):
+    aviso de checkout pendente + evento InitiateCheckout + repasse de UTM. */}

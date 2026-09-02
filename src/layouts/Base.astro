@@ -98,6 +98,11 @@ const year = new Date().getFullYear();
       })();
     </script>
 
+    <script>
+      import { initTracking } from '../lib/tracking';
+      initTracking();
+    </script>
+
     {
       TRACKING.metaPixelId && (
         <script is:inline define:vars={{ pid: TRACKING.metaPixelId }}>

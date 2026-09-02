@@ -72,13 +72,27 @@ export const SITE = {
 
 ```ts
 export const TRACKING = {
-  metaPixelId: '1234567890',   // vazio = não carrega o Pixel
-  ga4Id: 'G-XXXXXXX',          // vazio = não carrega o GA4
+  metaPixelId: '1374625827598727',   // vazio = não carrega o Pixel
+  ga4Id: 'G-XXXXXXX',                // vazio = não carrega o GA4
+  contentName: 'Receita Que Rende - Morango Cravejado',
 };
 ```
 
-O evento de checkout (`InitiateCheckout` / `begin_checkout`) dispara sozinho
-no clique de qualquer botão de compra.
+Já vem pronto (`src/lib/tracking.ts`), sem precisar colar nada em HTML:
+
+| Evento | Quando dispara | Parâmetros |
+|---|---|---|
+| `PageView` | ao carregar a página | — |
+| `ViewContent` | ao rolar até a seção de oferta | `content_name`, `value`, `currency` |
+| `InitiateCheckout` | no clique de qualquer botão de compra | `content_name`, `value`, `currency`, `location` |
+| `Purchase` | **não é disparado aqui** — fica por conta da Cakto | — |
+
+`value` e `currency` (BRL) saem automaticamente do `price`.
+
+**UTM / fbclid:** ao chegar pela URL do anúncio, os parâmetros `utm_source`,
+`utm_medium`, `utm_campaign`, `utm_content`, `utm_term` e `fbclid` são
+guardados na sessão e **anexados ao link do checkout** — assim a Cakto também
+atribui a origem da venda. Persiste se a pessoa navegar entre páginas antes de comprar.
 
 ### Dados do responsável (rodapé, termos, privacidade)
 

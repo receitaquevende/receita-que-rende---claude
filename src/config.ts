@@ -66,9 +66,9 @@ export const SITE = {
   /**
    * Endereço final da página (com https, sem barra no fim).
    * Usado em canonical, prévia de compartilhamento (OG) e sitemap.
-   * Ajuste para o subdomínio exato que a Vercel gerar, ou para o seu domínio próprio.
+   * Troque aqui se conectar um domínio próprio.
    */
-  url: 'https://receita-que-rende.vercel.app',
+  url: 'https://receita-que-rende-claude.vercel.app',
 
   title: 'Receita Que Rende | Morango Cravejado',
   description:
@@ -101,6 +101,26 @@ export const TRACKING = {
    * Meta: 'InitiateCheckout' | GA4: 'begin_checkout'
    */
   checkoutEvent: 'InitiateCheckout',
+
+  /**
+   * Nome usado em `content_name` dos eventos ViewContent / InitiateCheckout.
+   * O `value` e o `currency` saem automaticamente do preço (config acima).
+   * O evento `Purchase` NÃO é disparado aqui — fica por conta da Cakto.
+   */
+  contentName: 'Receita Que Rende - Morango Cravejado',
+
+  /**
+   * Parâmetros de campanha capturados da URL e repassados para o checkout.
+   * (utm_* + o clique da Meta). Não precisa mexer.
+   */
+  campaignParams: [
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_content',
+    'utm_term',
+    'fbclid',
+  ],
 } as const;
 
 /* -------------------------------------------------------------------------- */
@@ -136,6 +156,14 @@ export const hasGuarantee = GUARANTEE_DAYS > 0;
 
 /** true quando há um preço definido para exibir na página */
 export const hasPrice = PRODUCT.price.trim().length > 0;
+
+/** Preço como número (19.9), para os eventos de Pixel. null quando não há preço. */
+export const priceNumber: number | null = hasPrice
+  ? Number(PRODUCT.price.replace(/\./g, '').replace(',', '.')) || null
+  : null;
+
+/** currency ISO para os eventos de Pixel. */
+export const priceCurrency = 'BRL';
 
 /** Preço pronto para exibir, com prefixo. Ex.: 'R$ 39,90' */
 export const priceLabel = hasPrice
